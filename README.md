@@ -46,7 +46,7 @@ The above process can last a few minutes, but generates a lighter file. Then, yo
 ./dirListDump --url <the-url>
 ```
 
-You can also include the binary executable file at `/usr/local/bin` or other similar path to be ablle to run it from every directory on your machine just as 
+You can also include the binary executable file at `/usr/local/bin` or other similar path to be able to run it from every directory on your machine just as:
 
 ```console
 dirListDump --url <the-url>
