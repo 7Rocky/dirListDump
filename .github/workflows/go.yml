@@ -31,3 +31,4 @@ jobs:
       with:
         name: dirListDump
         path: ./dirListDump
+        if-no-files-found: error
