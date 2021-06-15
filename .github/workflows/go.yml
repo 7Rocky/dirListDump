@@ -22,7 +22,7 @@ jobs:
       run: sudo apt install upx
 
     - name: Build
-      run: >
+      run: |
         go build --ldflags='-s -w' dirListDump.go
         upx --ultra-brute dirListDump
       
