@@ -12,6 +12,7 @@ First step, clone or download this repository:
 ```console
 git clone https://github.com/7Rocky/dirListDump
 cd dirListDump
+```
 
 Then, you could run the Go source code using `go run` as shown below:
 
