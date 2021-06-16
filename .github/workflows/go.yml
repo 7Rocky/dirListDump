@@ -27,11 +27,6 @@ jobs:
         upx --ultra-brute dirListDump
         zip dirListDump.zip dirListDump
 
-  release:
-    needs:
-    - build
-    runs-on: ubuntu-latest
-    steps:
     - name: Create Draft Release
       id: create_release
       uses: actions/create-release@v1
