@@ -28,6 +28,8 @@ jobs:
         tar -czf dirListDump.tar.gz dirListDump
 
   release:
+    needs:
+    - build
     runs-on: ubuntu-latest
     steps:
     - name: Create Draft Release
