@@ -26,16 +26,32 @@ jobs:
         go build --ldflags='-s -w' dirListDump.go
         upx --ultra-brute dirListDump
         tar -czf dirListDump.tar.gz dirListDump
-      
-    - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v2.2.3
+
+  release:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Create Draft Release
+      id: create_release
+      uses: actions/create-release@v1
       env:
-        GITHUB_TOKEN: ${{ github.token }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: dirListDump
+        release_name: dirListDump
+        draft: true
+        prerelease: false
+
+    - uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: ./dirListDump.tar.gz
-        asset_name: dirListDump.tar.gz
+        asset_name: dirListDump.zip
         asset_content_type: application/gzip
-        name: dirListDump.tar.gz
-        path: ./dirListDump.tar.gz
-        if-no-files-found: error
+
+    - uses: eregon/publish-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        release_id: ${{ steps.create_release.outputs.id }}
