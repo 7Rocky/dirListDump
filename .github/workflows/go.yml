@@ -25,7 +25,7 @@ jobs:
       run: |
         go build --ldflags='-s -w' dirListDump.go
         upx --ultra-brute dirListDump
-        zip dirListDump
+        zip dirListDump.zip dirListDump
 
   release:
     needs:
