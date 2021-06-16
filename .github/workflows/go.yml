@@ -25,7 +25,7 @@ jobs:
       run: |
         go build --ldflags='-s -w' dirListDump.go
         upx --ultra-brute dirListDump
-        tar -czf dirListDump.tar.gz dirListDump
+        zip dirListDump
 
   release:
     needs:
@@ -48,9 +48,9 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./**/dirListDump.tar.gz
+        asset_path: ./dirListDump.zip
         asset_name: dirListDump.zip
-        asset_content_type: application/gzip
+        asset_content_type: application/zip
 
     - uses: eregon/publish-release@v1
       env:
