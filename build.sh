@@ -13,21 +13,19 @@ arch_split=(${arch_name//\// })
 GOOS=${arch_split[0]}
 GOARCH=${arch_split[1]}
 
-output_name="${package_name}-${GOOS}-${GOARCH}"
-zip_filename="${output_name}.zip"
+zip_filename="${package_name}-${GOOS}-${GOARCH}.zip"
 
 if [ $GOOS = 'windows' ]; then
-  output_name+='.exe'
+  package_name+='.exe'
 fi
 
-echo "Building $output_name..."
-env GOOS=$GOOS GOARCH=$GOARCH go build --ldflags='-s -w' -o $output_name *.go
-upx --ultra-brute $output_name &>/dev/null
+env GOOS=$GOOS GOARCH=$GOARCH go build --ldflags='-s -w' -o $package_name *.go
+upx --ultra-brute $package_name &>/dev/null
 
 if [ $? -ne 0 ]; then
   echo 'An error has occurred! Aborting the script execution...'
   exit 1
 fi
 
-zip $zip_filename $output_name
-rm $output_name
+zip $zip_filename $package_name
+rm $package_name
