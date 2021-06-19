@@ -19,8 +19,8 @@ jobs:
         with:
           draft: true
           prerelease: false
-          release_name: dldump-${{ matrix.arch }}
-          tag_name: dldump-${{ matrix.arch }}
+          release_name: dldump
+          tag_name: dldump
       - env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: actions/upload-release-asset@v1.0.1
