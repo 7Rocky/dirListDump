@@ -10,7 +10,7 @@ jobs:
       - name: Install upx
         run: sudo apt install upx
       - name: Build
-        run: ./build.sh dldump darwin-amd-64 && ./build.sh dldump linux-amd-64 # ${{ matrix.arch }}
+        run: ./build.sh dldump darwin-amd64 && ./build.sh dldump linux-amd64 # ${{ matrix.arch }}
       - env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         id: create_release
