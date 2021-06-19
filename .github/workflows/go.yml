@@ -10,7 +10,7 @@ jobs:
       - name: Install upx
         run: sudo apt install upx
       - name: Build
-        run: ./build.sh dldump darwin-amd64 && ./build.sh dldump linux-amd64 # ${{ matrix.arch }}
+        run: ./build.sh dldump
       - env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         id: create_release
@@ -34,22 +34,38 @@ jobs:
         uses: actions/upload-release-asset@v1.0.1
         with:
           asset_content_type: application/zip
+          asset_name: dldump-darwin-arm64.zip
+          asset_path: ./dldump-darwin-arm64.zip
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+      - env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: actions/upload-release-asset@v1.0.1
+        with:
+          asset_content_type: application/zip
           asset_name: dldump-linux-amd64.zip
           asset_path: ./dldump-linux-amd64.zip
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+      - env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: actions/upload-release-asset@v1.0.1
+        with:
+          asset_content_type: application/zip
+          asset_name: dldump-linux-arm64.zip
+          asset_path: ./dldump-linux-arm64.zip
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+      - env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: actions/upload-release-asset@v1.0.1
+        with:
+          asset_content_type: application/zip
+          asset_name: dldump-windows-arm64.zip
+          asset_path: ./dldump-windows-arm64.zip
           upload_url: ${{ steps.create_release.outputs.upload_url }}
       - env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: eregon/publish-release@v1
         with:
           release_id: ${{ steps.create_release.outputs.id }}
-    # strategy:
-    #   matrix:
-    #     arch:
-    #       - darwin-amd64
-    #       # - darwin-arm64
-    #       - linux-amd64
-    #       # - linux-arm64
-    #       # - windows-amd64
 name: Go
 on:
   pull_request:
