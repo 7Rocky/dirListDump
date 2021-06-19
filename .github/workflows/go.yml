@@ -26,8 +26,16 @@ jobs:
         uses: actions/upload-release-asset@v1.0.1
         with:
           asset_content_type: application/zip
-          asset_name: dldump-${{ matrix.arch }}.zip
-          asset_path: ./dldump-${{ matrix.arch }}.zip
+          asset_name: dldump-darwin-amd64.zip
+          asset_path: ./dldump-darwin-amd64.zip
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+      - env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: actions/upload-release-asset@v1.0.1
+        with:
+          asset_content_type: application/zip
+          asset_name: dldump-linux-amd64.zip
+          asset_path: ./dldump-linux-amd64.zip
           upload_url: ${{ steps.create_release.outputs.upload_url }}
       - env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -38,10 +46,10 @@ jobs:
       matrix:
         arch:
           - darwin-amd64
-          - darwin-arm64
+          # - darwin-arm64
           - linux-amd64
-          - linux-arm64
-          - windows-amd64
+          # - linux-arm64
+          # - windows-amd64
 name: Go
 on:
   pull_request:
