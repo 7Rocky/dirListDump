@@ -31,6 +31,3 @@ fi
 
 zip $zip_filename $output_name
 rm $output_name
-
-mkdir build 2>/dev/null
-mv $zip_filename build
