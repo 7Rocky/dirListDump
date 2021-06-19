@@ -8,13 +8,15 @@ if [[ -z "$package_name" ]] || [[ -z "$arch_name" ]]; then
   exit 1
 fi
 
-arch_split=(${arch_name//\//})
+arch_split=(${arch_name//\// })
 
 GOOS=${arch_split[0]}
 GOARCH=${arch_split[1]}
 
 output_name="${package_name}-${GOOS}-${GOARCH}"
 zip_filename="${output_name}.zip"
+
+exit 1
 
 if [ $GOOS = 'windows' ]; then
   output_name+='.exe'
