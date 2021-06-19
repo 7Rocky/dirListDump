@@ -12,8 +12,6 @@ import (
 
 	"io/ioutil"
 	"net/http"
-
-	"github.com/fatih/color"
 )
 
 var (
@@ -27,7 +25,7 @@ func parseParams() {
 	flag.Parse()
 
 	if *rootUrl == "" {
-		color.Red("\nFlag --url not set.\n")
+		RedPrint("\nFlag --url not set.\n")
 		fmt.Printf("\nUse %s --help for more information\n\n", os.Args[0])
 		os.Exit(1)
 	}
@@ -43,7 +41,7 @@ func getBodyUrl(url string) []byte {
 	res, err := http.Get(url)
 
 	if err != nil {
-		color.Red(err.Error() + "\n\n")
+		RedPrint(err.Error() + "\n\n")
 		os.Exit(1)
 	}
 
@@ -55,45 +53,6 @@ func getBodyUrl(url string) []byte {
 	}
 
 	return body
-}
-
-var pattern = regexp.MustCompile(`<a href="(.*?)">`)
-
-func getDirLine(depth int, isLast bool) string {
-	if isLast {
-		return color.CyanString(strings.Repeat("│   ", depth) + "└── ")
-	}
-
-	return color.CyanString(strings.Repeat("│   ", depth) + "├── ")
-}
-
-func getDirList(dirList chan string, url string, depth int, printTree bool) {
-	body := getBodyUrl(url)
-	matches := pattern.FindAllStringSubmatch(string(body), -1)
-
-	if printTree && depth == 0 {
-		fmt.Println("/")
-	}
-
-	for i, m := range matches {
-		if m[1] == "/" {
-			continue
-		}
-
-		if printTree {
-			fmt.Println(getDirLine(depth, i == len(matches)-1) + m[1])
-		}
-
-		if strings.HasSuffix(m[1], "/") {
-			getDirList(dirList, url+m[1], depth+1, printTree)
-		} else {
-			dirList <- url + m[1]
-		}
-	}
-
-	if depth == 0 {
-		close(dirList)
-	}
 }
 
 const dirPerm = os.FileMode(0755)
@@ -130,6 +89,32 @@ func dumpDirList(wg *sync.WaitGroup, dirList chan string, rootUrl string) {
 	}
 }
 
+var pattern = regexp.MustCompile(`<a href="(.*?)">`)
+var tree = Tree{}
+
+func getDirList(dirList chan string, url string, depth int) {
+	body := getBodyUrl(url)
+	matches := pattern.FindAllStringSubmatch(string(body), -1)
+
+	for _, m := range matches {
+		if m[1] == "/" {
+			continue
+		}
+
+		tree.Add(url[len(*rootUrl):] + m[1])
+
+		if strings.HasSuffix(m[1], "/") {
+			getDirList(dirList, url+m[1], depth+1)
+		} else {
+			dirList <- url + m[1]
+		}
+	}
+
+	if depth == 0 {
+		close(dirList)
+	}
+}
+
 func main() {
 	parseParams()
 
@@ -145,9 +130,10 @@ func main() {
 		go dumpDirList(&wg, dirList, *rootUrl)
 	}
 
-	getDirList(dirList, *rootUrl, 0, *printTree)
+	getDirList(dirList, *rootUrl, 0)
 
 	if *printTree {
+		tree.Print()
 		fmt.Println("")
 	}
 
@@ -157,10 +143,10 @@ func main() {
 	timeLapse := time.Since(start)
 
 	if timeLapse.Seconds() < 3 {
-		color.Green(timeLapse.String())
+		GreenPrint(timeLapse.String())
 	} else if timeLapse.Seconds() < 20 {
-		color.Yellow(timeLapse.String())
+		YellowPrint(timeLapse.String())
 	} else {
-		color.Red(timeLapse.String())
+		RedPrint(timeLapse.String())
 	}
 }
