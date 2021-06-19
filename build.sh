@@ -7,7 +7,7 @@ if [[ -z "$package_name" ]]; then
   exit 1
 fi
 
-archs=('darwin/amd64' 'darwin/arm64' 'linux/amd64' 'linux/amr64' 'windows/amd64')
+archs=('darwin/amd64' 'darwin/arm64' 'linux/amd64' 'linux/arm64' 'windows/amd64')
 
 for arch_name in "${archs[@]}"; do
   arch_split=(${arch_name//\// })
