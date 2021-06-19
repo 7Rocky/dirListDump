@@ -10,7 +10,7 @@ jobs:
       - name: Install upx
         run: sudo apt install upx
       - name: Build
-        run: ./build.sh dldump ${{ matrix.arch }}
+        run: ./build.sh dldump darwin-amd-64 && ./build.sh dldump linux-amd-64 # ${{ matrix.arch }}
       - env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         id: create_release
@@ -42,14 +42,14 @@ jobs:
         uses: eregon/publish-release@v1
         with:
           release_id: ${{ steps.create_release.outputs.id }}
-    strategy:
-      matrix:
-        arch:
-          - darwin-amd64
-          # - darwin-arm64
-          - linux-amd64
-          # - linux-arm64
-          # - windows-amd64
+    # strategy:
+    #   matrix:
+    #     arch:
+    #       - darwin-amd64
+    #       # - darwin-arm64
+    #       - linux-amd64
+    #       # - linux-arm64
+    #       # - windows-amd64
 name: Go
 on:
   pull_request:
