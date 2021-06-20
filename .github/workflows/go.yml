@@ -58,8 +58,8 @@ jobs:
         uses: actions/upload-release-asset@v1.0.1
         with:
           asset_content_type: application/zip
-          asset_name: dldump-windows-arm64.zip
-          asset_path: ./dldump-windows-arm64.zip
+          asset_name: dldump-windows-amd64.zip
+          asset_path: ./dldump-windows-amd64.zip
           upload_url: ${{ steps.create_release.outputs.upload_url }}
       - env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
